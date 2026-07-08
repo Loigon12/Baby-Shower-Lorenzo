@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Shower - Ana Lucía</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+        .font-cursive { font-family: 'Dancing Script', cursive; }
+        .bg-pattern {
+            background-color: #eff6ff; /* Azul muy claro para el fondo */
+            background-image: url("https://www.transparenttextures.com/patterns/polka-dots.png");
+        }
+        .gift-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        @media (min-width: 768px) {
+            .gift-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 30px -10px rgba(59, 130, 246, 0.2); /* Sombra azul */
+            }
+        }
+    </style>
+</head>
+<body class="bg-pattern text-gray-700 overflow-x-hidden">
+
+    <header class="relative flex flex-col items-center justify-center py-12 md:py-20 px-4 text-center">
+        <div class="absolute top-5 left-5 w-20 h-20 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-60"></div>
+        <div class="absolute top-0 right-5 w-24 h-24 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-60"></div>
+        
+        <h1 class="font-cursive text-5xl sm:text-7xl md:text-8xl text-blue-500 mb-4 drop-shadow-sm">Lorenzo</h1>
+        <p class="text-lg md:text-2xl font-light tracking-[0.2em] text-blue-400 uppercase">Baby Shower Sorpresa</p>
+        
+        <div class="mt-8 p-5 md:p-8 bg-white/80 backdrop-blur-sm rounded-[2rem] shadow-xl border border-blue-100 max-w-xl w-full">
+            <p class="text-base md:text-lg italic text-gray-600 mb-6">
+                las mejores historias comienzan rodeadas de personas especiales como tú.
+Acompáñanos a celebrar la llegada del bebé de Ivianed y Michael en una tarde mágica llena de juegos y mucha emoción.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-blue-600 font-medium">
+                <div class="flex flex-col border-b sm:border-b-0 sm:border-r border-blue-100 pb-2 sm:pb-0">
+                    <span class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Fecha</span>
+                    <span class="text-sm md:text-base">Lunes festivo, 13 de Julio, 2026</span>
+                </div>
+                <div class="flex flex-col border-b sm:border-b-0 sm:border-r border-blue-100 pb-2 sm:pb-0">
+                    <span class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Hora</span>
+                    <span class="text-sm md:text-base">4:00 PM</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Lugar</span>
+                    <span class="text-sm md:text-base">Praderas de Santa Rita etapa 1,
+Manzana 5, casa 8 piso 3.</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section class="bg-white py-12 px-4 relative shadow-sm">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="font-cursive text-3xl md:text-4xl text-blue-500 mb-8">La reunión es en...</h2>
+            <div class="flex justify-center gap-3 sm:gap-6" id="countdown">
+                <div class="flex flex-col items-center p-3 sm:p-5 bg-blue-50 rounded-2xl border border-blue-100 min-w-[70px] sm:min-w-[100px]">
+                    <span class="text-2xl sm:text-4xl font-bold text-blue-600" id="days">00</span>
+                    <span class="text-[10px] sm:text-xs text-blue-400 uppercase mt-1">Días</span>
+                </div>
+                <div class="flex flex-col items-center p-3 sm:p-5 bg-blue-50 rounded-2xl border border-blue-100 min-w-[70px] sm:min-w-[100px]">
+                    <span class="text-2xl sm:text-4xl font-bold text-blue-600" id="hours">00</span>
+                    <span class="text-[10px] sm:text-xs text-blue-400 uppercase mt-1">Horas</span>
+                </div>
+                <div class="flex flex-col items-center p-3 sm:p-5 bg-blue-50 rounded-2xl border border-blue-100 min-w-[70px] sm:min-w-[100px]">
+                    <span class="text-2xl sm:text-4xl font-bold text-blue-600" id="minutes">00</span>
+                    <span class="text-[10px] sm:text-xs text-blue-400 uppercase mt-1">Min.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 py-16">
+        <div class="text-center mb-10">
+            <h2 class="font-cursive text-4xl md:text-5xl text-blue-500 mb-4">Mesa de Regalos</h2>
+            <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto px-4 mb-4">
+                Tu presencia es el mejor regalo, pero si deseas tener un hermoso detalle con nuestra bebé, aquí tienes las opciones que hemos propuesto:
+            </p>
+            
+        </div>
+
+        <!-- Lista de regalos propuestos -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">1ra Muda bebé</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Pañalera</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Pijamas</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Cobija</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Pañales</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Toalla</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Shampoo</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Jabón</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Aceite</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Loción</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Pañitos húmedos</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Crema antipañalitis</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Conjuntos niño</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Medias</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Baberos</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Tina baño</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Pera de succión</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Almohada</div>
+            <div class="bg-white p-4 rounded-2xl border border-blue-100 shadow-sm text-center flex items-center justify-center font-medium text-gray-700 hover:border-blue-300 transition-colors">Mamelucos</div>
+            <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 border-dashed shadow-sm text-center flex items-center justify-center font-semibold text-blue-500 italic">¡Y mucho más!</div>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-4 pb-12">
+        <div class="bg-white rounded-[2.5rem] shadow-lg border border-blue-100 p-8 md:p-10 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-32 h-32 bg-blue-50 rounded-full -ml-10 -mt-10 opacity-60 z-0"></div>
+            <div class="absolute bottom-0 right-0 w-24 h-24 bg-purple-50 rounded-full -mr-5 -mb-5 opacity-60 z-0"></div>
+            
+            <p class="text-blue-600 font-medium text-sm md:text-base max-w-2xl mx-auto px-4 italic bg-blue-50/60 py-3 rounded-2xl border border-blue-100">
+             Recuerda que si deseas regalar algo diferente que no esté en esta lista, <strong>estás en todo tu derecho de hacerlo</strong>. ¡Cualquier muestra de cariño será recibida con el corazón abierto!
+            </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-2xl mx-auto px-4 pb-16">
+        <div class="bg-white/80 backdrop-blur-sm rounded-[2rem] border border-blue-50 shadow-sm p-6 md:p-8 text-center">
+            <h3 class="font-cursive text-3xl text-blue-500 mb-4">Ubicación</h3>
+            <div class="flex flex-col items-center justify-center gap-2">
+                <p class="text-gray-800 font-medium text-lg">Praderas de Santa Rita etapa 1,
+Manzana 5, casa 8 piso 3</p>
+                
+                
+                <a href="https://share.google/pc5lSsBpdc7XgxwFq" target="_blank" 
+                    class="inline-flex items-center gap-2 px-6 py-2 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 hover:text-blue-700 transition-colors text-sm font-bold tracking-wide">
+                    <span>📍 Ver en Mapa</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-4 pb-20">
+        <div class="bg-white rounded-[2.5rem] shadow-xl border border-blue-100 p-8 md:p-12 text-center relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-purple-100 rounded-full opacity-50"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-100 rounded-full opacity-50"></div>
+
+            <div class="relative z-10">
+                <span class="text-3xl mb-2 block"></span>
+                <h3 class="font-cursive text-4xl md:text-5xl text-blue-500 mb-4">¿Nos acompañas?</h3>
+                <p class="text-gray-600 mb-10 max-w-md mx-auto">
+                    Por favor, confirma tu asistencia!
+                </p>
+
+                
+
+                
+            </div>
+        </div>
+    </section>
+
+    
+
+   
+    <footer class="text-center py-12 bg-white/50 flex flex-col items-center">
+        <p class="font-cursive text-2xl text-blue-400 mb-4">¡Te esperamos!</p>
+        
+    </footer>
+
+    <script>
+       
+      
+
+        // --- 7. RELOJ ---
+        const eventDate = new Date("July 13, 2026 16:00:00").getTime();
+        function updateClock() {
+            const diff = eventDate - new Date().getTime();
+            if(diff < 0) return;
+            document.getElementById("days").innerText = Math.floor(diff / 86400000).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
